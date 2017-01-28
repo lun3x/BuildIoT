@@ -1,10 +1,7 @@
 import tweepy
 import json
-rasppi = True #mailbox: use prints or rasp pi actions
-if rasppi:
-    from mailbox_pi import MailboxPi as Mailbox
-else:
-    from mailbox_sim import MailboxSim as Mailbox
+
+from mailbox_pi import MailboxPi as Mailbox
 
 # constants
 handle = 'youvegotmailbox'

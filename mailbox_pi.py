@@ -1,48 +1,41 @@
 from gpiozero import Servo
 from gpiozero import Button
 from time import sleep
-from mailbox_sim import MailboxSim
 
-class MailboxPi(MailboxSim):
-
-    # static class attributes
-    lock = Servo(17)
-    flag = Servo(18)
-    floor = Button(6)
-    door = Button(12)
+class MailboxPi:
 
     def __init__(self):
-        super(MailboxPi, self).__init__()
-        door.when_pressed = _incrementMailCount
-        floor.when_released = _resetMailCount
-        floor.when_pressed = _liftFlag
+        self.lock = Servo(17)
+        self.flag = Servo(18)
+        self.floor = Button(6)
+        self.door = Button(12)
+        self.door.when_pressed = self._incrementMailCount
+        self.floor.when_released = self._resetMailbox
+        self.floor.when_pressed = self._liftFlag
+        self.mailCount = 0
         
     def hasMail(self):
-        super(MailboxPi, self).hasMail()
-        return floor.is_pressed
+        return self.floor.is_pressed
 
     def getMailCount(self):
-        return super(MailboxPi, self).getMail()
+        return self.mailCount
 
     def lockDoor(self):
-        lock.min()
-        return super(MailboxPi, self).lockDoor()
+        self.lock.min()
 
     def unlockDoor(self):
-        lock.max()
-        return super(MailboxPi, self).unlockDoor()
+        self.lock.max()
 
     def _liftFlag(self):
-        flag.max()
-        return super(MailboxPi, self)._liftFlag()
+        self.flag.max()
 
     def _lowerFlag(self):
-        flag.min()
-        return super(MailboxPi, self)._lowerFlag()
+        self.flag.min()
         
     def _incrementMailCount(self):
-        if floor.is_pressed:
-            super(MailboxPi, self)._incrementMailCount()
+        if self.floor.is_pressed:
+            self.mailCount += 1
         
-    def _resetMailCount(self):
-        super(MailboxPi, self)._resetMailCount()
+    def _resetMailbox(self):
+        self.mailCount = 0
+        self._lowerFlag()
