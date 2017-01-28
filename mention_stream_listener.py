@@ -38,8 +38,15 @@ class MentionStreamListener(tweepy.StreamListener):
                 self._lockMailBox(status, sn)
             elif "unlock" in text.lower():
                 self._unlockMailBox(status, sn)
+            elif "whitelist" in text.lower():
+                self._authoriseNewUser(status, sn)
+                print whitelistUsers
+            elif "blacklist" in text.lower():
+                self._blacklistUser(status, sn)
+                print whitelistUsers
             else:
                 self._unrecognisedCommand(status, sn)
+                print status.text
 
 
     def on_error(self, status_code):
@@ -68,7 +75,6 @@ class MentionStreamListener(tweepy.StreamListener):
         text = '@{0} Sorry, we do not recognise that command :('.format(sn)
         api.update_status(text, status.id)
 
-
     def _authUser(self, status):
         sn = status.user.screen_name
         print sn
@@ -78,4 +84,33 @@ class MentionStreamListener(tweepy.StreamListener):
     def _userAuthError(self, status):
         sn = status.user.screen_name
         text = '@{0} Sorry, you are not authorised to use this mailbox. :/'.format(sn)
+        api.update_status(text, status.id)
+
+    def _authoriseNewUser(self, status, sn):
+        try:
+            newUser = self._getSecondMentionInTweet(status)
+            if newUser in whitelistUsers:
+                text = '@{0} This user is already authorised :)'.format(sn)
+            else:
+                whitelistUsers.append(str(newUser))
+                text = '@{0}, We have granted @{1} permission to tweet your mailbox! :D'.format(sn, newUser)
+        except IndexError as e: #no second mention in tweet
+            text = '@{0}, You didn\'t tell us who to authorise?'.format(sn)
+        # send the tweet
+        api.update_status(text, status.id)
+
+    def _getSecondMentionInTweet(self, status):
+        return status._json['entities']['user_mentions'][1]['screen_name']
+
+    def _blacklistUser(self, status, sn):
+        try:
+            newUser = self._getSecondMentionInTweet(status)
+            if not str(newUser) in whitelistUsers:
+                text = '@{0} This user is doesn\'t have permissions already :)'.format(sn)
+            else:
+                whitelistUsers.remove(str(newUser))
+                text = '@{0}, We have revoked @{1} permission to tweet your mailbox! D:'.format(sn, newUser)
+        except IndexError as e: #no second mention in tweet
+            text = '@{0}, You didn\'t tell us who to authorise?'.format(sn)
+        # send the tweet
         api.update_status(text, status.id)
