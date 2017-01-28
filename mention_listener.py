@@ -1,23 +1,27 @@
 import tweepy
-rasppi = False #use prints or rasp pi actions
+import json
+rasppi = False #mailbox: use prints or rasp pi actions
 if rasppi:
     import mailbox
 else:
     import mailbox_sim as mailbox
 
 # constants
-handle = "youvegotmail"
+handle = 'youvegotmailbox'
 
 #override tweepy.StreamListener to add logic to on_status
 class MentionStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-        # XXX: bug
-        mentionedScreenname = next((mention_screen_name for mention in status.entities.user_mentions if mention.screen_name == handle), None)
+        # get tweet json
+        tweetdata = status._json
 
-        # if mentioned the bot, do what they asked
+        # get first user dict whose screen_name is `handle`
+        mentionedScreenname = next((mention['screen_name'] for mention in tweetdata['entities']['user_mentions'] if mention['screen_name'] == handle), None)
+
+        # if tweeter mentioned the bot, do what they asked
         if mentionedScreenname != None:
             text = status.text
-            sn = status.user.screen_name
+            sn = str(status.user.screen_name)
 
             if "do i have mail" in text.lower():
                 self._replyMailInfo(status, sn)
@@ -36,15 +40,25 @@ class MentionStreamListener(tweepy.StreamListener):
             return False
 
 
-    def _replyMailInfo(self, status, sn):
-        tweet = "@{0} You have {1} unread mail".format(sn, len(mailbox.getMail))
-        api.update_status(tweet, status.id)
+    # private
 
+    def _replyMailInfo(self, status, sn):
+        text = '@{0} You have {1} unread mail'.format(sn, len(mailbox.getMail))
+        api.update_status(text, status.id)
 
     def _lockMailBox(self, status, sn):
         mailbox.lockDoor()
-        tweet = "@{0} We have locked your mailbox :)"
-        api.update_status(tweet, status.id)
+        text = '@{0} We have locked your mailbox :)'.format(sn)
+        api.update_status(text, status.id)
+
+    def _unlockMailBox(self, status, sn):
+        mailbox.unlockDoor()
+        text = '@{0} We have unlocked your mailbox :)'.format(sn)
+        api.update_status(text, status.id)
+
+    def _unlockMailBox(self, status, sn):
+        text = '@{0} Sorry, we do not recognise that command :('.format(sn)
+        api.update_status(text, status.id)
 
 
 
