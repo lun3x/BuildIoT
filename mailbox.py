@@ -1,23 +1,23 @@
-def hasMail:
+def hasMail():
     pass
 
-def getMail:
+def getMail():
     pass
 
-def addMail:
+def addMail():
     pass
 
-def addMailList:
+def addMailList():
     pass
 
-def lockDoor:
+def lockDoor():
     pass
 
-def unlockDoor:
+def unlockDoor():
     pass
 
-def liftFlag:
+def liftFlag():
     pass
 
-def lowerFlag:
+def lowerFlag():
     pass
