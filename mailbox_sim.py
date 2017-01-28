@@ -14,7 +14,7 @@ class MailboxSim:
 
     def addMail():
         print "addMail"
-        if !isDoorLocked:
+        if not isDoorLocked:
             print "addMail failed: door locked"
             return False
         else:
@@ -22,7 +22,7 @@ class MailboxSim:
 
     def addMails(mails):
         print "addMails with " + mails
-        if !isDoorLocked:
+        if not isDoorLocked:
             print "addMails failed: door locked"
             return False
         else:
@@ -30,13 +30,13 @@ class MailboxSim:
 
     def lockDoor():
         print "lockDoor"
-        if !isDoorLocked print "lockDoor: door already locked"
+        if not isDoorLocked:
+             print "lockDoor: door already locked"
         isDoorLocked = True;
 
     def unlockDoor():
         print "unlockDoor"
-        if isDoorLocked:
-            print "unlockDoor: door unlocked"
+        if not isDoorLocked:
             isDoorLocked = False
         else:
             print "unlockDoor: door already locked"

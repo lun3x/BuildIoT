@@ -2,15 +2,21 @@ import tweepy
 import json
 rasppi = False #mailbox: use prints or rasp pi actions
 if rasppi:
-    import mailbox_pi as mailbox
+    from mailbox_pi import MailboxPi as Mailbox
+
 else:
-    import mailbox_sim as mailbox
+    from mailbox_sim import MailboxSim as Mailbox
 
 # constants
 handle = 'youvegotmailbox'
 
 #override tweepy.StreamListener to add logic to on_status
 class MentionStreamListener(tweepy.StreamListener):
+
+    def __init__(self, mailbox):
+        self.mailbox = mailbox
+        super(MentionStreamListener, self).__init__()
+
     def on_status(self, status):
         # get tweet json
         tweetdata = status._json
@@ -30,7 +36,6 @@ class MentionStreamListener(tweepy.StreamListener):
             elif "close" in text.lower():
                 self._unlockMailBox(status, sn)
             else:
-                print "Erorr: {0}\n".format(status)
                 self._unrecognisedCommand(status, sn)
 
 
@@ -58,7 +63,7 @@ class MentionStreamListener(tweepy.StreamListener):
         text = '@{0} We have unlocked your mailbox :)'.format(sn)
         api.update_status(text, status.id)
 
-    def _unlockMailBox(self, status, sn):
+    def _unrecognisedCommand(self, status, sn):
         text = '@{0} Sorry, we do not recognise that command :('.format(sn)
         api.update_status(text, status.id)
 
@@ -72,7 +77,8 @@ if __name__ == "__main__":
     api = tweepy.API(auth)
 
     # set up stream listener and stream
-    listener = MentionStreamListener()
+    mailbox = Mailbox()
+    listener = MentionStreamListener(mailbox)
     stream = tweepy.Stream(auth = api.auth, listener = listener)
 
     # start stream

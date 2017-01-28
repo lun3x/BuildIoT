@@ -1,8 +1,8 @@
 from gpiozero import Servo
 from time import sleep
-from mailbox_abstract import MailboxAbstract
+from mailbox_sim import MailboxSim
 
-class MailboxPi(MailboxAbstract):
+class MailboxPi(MailboxSim):
 
     # static class attributes
     lock = Servo(17)
