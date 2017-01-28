@@ -1,10 +1,18 @@
 import tweepy
-import mailbox
+rasppi = False #use prints or rasp pi actions
+if rasppi:
+    import mailbox
+else:
+    import mailbox_sim as mailbox
+
+# constants
+handle = "youvegotmail"
 
 #override tweepy.StreamListener to add logic to on_status
 class MentionStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-        mentionedScreenname = next((mention_screen_name for mention in status.entities.user_mentions if mention.screen_name == 'youvegotmailbox'), None)
+        # XXX: bug
+        mentionedScreenname = next((mention_screen_name for mention in status.entities.user_mentions if mention.screen_name == handle), None)
 
         # if mentioned the bot, do what they asked
         if mentionedScreenname != None:
@@ -52,4 +60,4 @@ if __name__ == "__main__":
     stream = tweepy.Stream(auth = api.auth, listener = listener)
 
     # start stream
-    stream.filter(track = ['youvegotmailbox']) # our handle
+    stream.filter(track = [handle]) # our handle
