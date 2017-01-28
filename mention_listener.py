@@ -1,6 +1,6 @@
 import tweepy
 import json
-rasppi = False #mailbox: use prints or rasp pi actions
+rasppi = True #mailbox: use prints or rasp pi actions
 if rasppi:
     import mailbox
 else:
@@ -25,19 +25,21 @@ class MentionStreamListener(tweepy.StreamListener):
 
             if "do i have mail" in text.lower():
                 self._replyMailInfo(status, sn)
-            elif "lock my mailbox" in text.lower():
+            elif "open" in text.lower():
                 self._lockMailBox(status, sn)
-            elif "unlock my mailbox" in text.lower():
+            elif "close" in text.lower():
                 self._unlockMailBox(status, sn)
             else:
+                print "Erorr: {0}\n".format(status)
                 self._unrecognisedCommand(status, sn)
 
 
     def on_error(self, status_code):
-        '''disconnect stream if too many api calls
-        '''
+        '''disconnect stream if too many api calls'''
         if status_code == 420:
             return False
+        else:
+			return True
 
 
     # private
