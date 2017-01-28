@@ -3,7 +3,6 @@ import mailbox
 
 #override tweepy.StreamListener to add logic to on_status
 class MentionStreamListener(tweepy.StreamListener):
-
     def on_status(self, status):
         mentionedScreenname = next((mention_screen_name for mention in status.entities.user_mentions if mention.screen_name == 'youvegotmail'), None)
 
@@ -21,15 +20,18 @@ class MentionStreamListener(tweepy.StreamListener):
             else:
                 self._unrecognisedCommand(status, sn)
 
+
     def on_error(self, status_code):
         '''disconnect stream if too many api calls
         '''
         if status_code == 420:
             return False
 
+
     def _replyMailInfo(self, status, sn):
         tweet = "@{0} You have {1} unread mail".format(sn, len(mailbox.getMail))
         api.update_status(tweet, status.id)
+
 
     def _lockMailBox(self, status, sn):
         mailbox.lockDoor()
