@@ -43,7 +43,7 @@ class MentionStreamListener(tweepy.StreamListener):
         if status_code == 420:
             return False
         else:
-			return True
+            return True
 
 
     # private
@@ -53,9 +53,7 @@ class MentionStreamListener(tweepy.StreamListener):
         api.update_status(text, status.id)
 
     def _lockMailBox(self, status, sn):
-        print "got here"
         mailbox.lockDoor()
-        print "got here"
         text = '@{0} We have locked your mailbox :)'.format(sn)
         api.update_status(text, status.id)
 
