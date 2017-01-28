@@ -15,7 +15,7 @@ class MailboxPi(MailboxSim):
         print("Checked for mail")
         return super(MailboxPi, self).hasMail()
 
-    def getMail():
+    def getMailCount():
         return super(MailboxPi, self).getMail()
 
     def addMail():
@@ -23,6 +23,9 @@ class MailboxPi(MailboxSim):
 
     def addMails(mails):
         return super(MailboxPi, self).addMails(mails)
+
+    def popMail():
+        return super(MailBoxPi, self).popMail()
 
     def lockDoor():
         lock.min()
@@ -32,10 +35,10 @@ class MailboxPi(MailboxSim):
         lock.max()
         return super(MailboxPi, self).unlockDoor()
 
-    def liftFlag():
+    def _liftFlag():
         flag.max()
         return super(MailboxPi, self).liftFlag()
 
-    def lowerFlag():
+    def _lowerFlag():
         flag.min()
         return super(MailboxPi, self).lowerFlag()
