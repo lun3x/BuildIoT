@@ -1,25 +1,50 @@
-def hasMail():
-    print "hasMail"
-    return True
+class MailboxSim:
 
-def getMail():
-    print "getMail"
-    return ({"body": "some text"})
+    def __init__(self):
+        self.isDoorLocked = False
+        self.isFlagDown = False
 
-def addMail():
-    print "addMail"
+    def hasMail():
+        print "hasMail"
+        return True
 
-def addMailList(mails):
-    print "addMailList with " + mails
+    def getMail():
+        print "getMail"
+        return 0
 
-def lockDoor():
-    print "lockDoor"
+    def addMail():
+        print "addMail"
+        if !isDoorLocked:
+            print "addMail failed: door locked"
+            return False
+        else:
+            return True
 
-def unlockDoor():
-    print "unlockDoor"
+    def addMails(mails):
+        print "addMails with " + mails
+        if !isDoorLocked:
+            print "addMails failed: door locked"
+            return False
+        else:
+            return True;
 
-def liftFlag():
-    print "liftFlag"
+    def lockDoor():
+        print "lockDoor"
+        if !isDoorLocked print "lockDoor: door already locked"
+        isDoorLocked = True;
 
-def lowerFlag():
-    print "lowerFlag"
+    def unlockDoor():
+        print "unlockDoor"
+        if isDoorLocked:
+            print "unlockDoor: door unlocked"
+            isDoorLocked = False
+        else:
+            print "unlockDoor: door already locked"
+
+    def liftFlag():
+        print "liftFlag"
+        isFlagDown = False
+
+    def lowerFlag():
+        print "lowerFlag"
+        isFlagDown = True
