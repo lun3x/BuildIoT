@@ -4,7 +4,7 @@ import mailbox
 #override tweepy.StreamListener to add logic to on_status
 class MentionStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-        mentionedScreenname = next((mention_screen_name for mention in status.entities.user_mentions if mention.screen_name == 'youvegotmail'), None)
+        mentionedScreenname = next((mention_screen_name for mention in status.entities.user_mentions if mention.screen_name == 'youvegotmailbox'), None)
 
         # if mentioned the bot, do what they asked
         if mentionedScreenname != None:
@@ -52,4 +52,4 @@ if __name__ == "__main__":
     stream = tweepy.Stream(auth = api.auth, listener = listener)
 
     # start stream
-    stream.filter(track = ['youvegotmail']) # our handle
+    stream.filter(track = ['youvegotmailbox']) # our handle
