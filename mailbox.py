@@ -1,23 +1,29 @@
-def hasMail:
+from gpiozero import Servo
+from time import sleep
+
+lock = Servo(17)
+flag = Servo(18)
+
+def hasMail():
+    return True
+
+def getMail():
     pass
 
-def getMail:
+def addMail():
     pass
 
-def addMail:
+def addMailList():
     pass
 
-def addMailList:
-    pass
+def lockDoor():
+    lock.min()
 
-def lockDoor:
-    pass
+def unlockDoor():
+    lock.max()
 
-def unlockDoor:
-    pass
+def liftFlag():
+    flag.max()
 
-def liftFlag:
-    pass
-
-def lowerFlag:
-    pass
+def lowerFlag():
+    flag.min()
