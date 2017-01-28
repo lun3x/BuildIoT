@@ -5,60 +5,60 @@ class MailboxSim:
         self.isFlagDown = False
         self.mailCount = 0
 
-    def hasMail():
+    def hasMail(self):
         print "hasMail"
-        if mailCount > 0:
+        if self.mailCount > 0:
             return True
         else:
             return False
 
-    def getMailCount():
+    def getMailCount(self):
         print "getMail"
-        return mailCount
+        return self.mailCount
 
-    def addMail():
+    def addMail(self):
         print "addMail"
-        if isDoorLocked:
+        if self.isDoorLocked:
             print "addMail failed: door locked"
-            mailCount += 1
+            self.mailCount += 1
             return False
         else:
             return True
 
-    def addMails(mails):
+    def addMails(self, mails):
         print "addMails with " + mails
-        if isDoorLocked:
+        if self.isDoorLocked:
             print "addMails failed: door locked"
             return False
         else:
             return True
 
-    def popMail():
+    def popMail(self):
         print "popMail"
-        if isDoorLocked:
+        if self.isDoorLocked:
             print "popMail failed: door locked"
             return False
         else:
-            mailCount -= 1
+            self.mailCount -= 1
             return True
 
-    def lockDoor():
+    def lockDoor(self):
         print "lockDoor"
-        if isDoorLocked:
+        if self.isDoorLocked:
              print "lockDoor: door already locked"
-        isDoorLocked = True;
+        self.isDoorLocked = True
 
-    def unlockDoor():
+    def unlockDoor(self):
         print "unlockDoor"
-        if isDoorLocked
-            isDoorLocked = False
+        if self.isDoorLocked:
+            self.isDoorLocked = False
         else:
             print "unlockDoor: door already unlocked"
 
-    def _liftFlag():
+    def _liftFlag(self):
         print "liftFlag"
-        isFlagDown = False
+        self.isFlagDown = False
 
-    def _lowerFlag():
+    def _lowerFlag(self):
         print "lowerFlag"
-        isFlagDown = True
+        self.isFlagDown = True

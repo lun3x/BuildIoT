@@ -3,7 +3,6 @@ import json
 rasppi = False #mailbox: use prints or rasp pi actions
 if rasppi:
     from mailbox_pi import MailboxPi as Mailbox
-
 else:
     from mailbox_sim import MailboxSim as Mailbox
 
@@ -31,9 +30,9 @@ class MentionStreamListener(tweepy.StreamListener):
 
             if "do i have mail" in text.lower():
                 self._replyMailInfo(status, sn)
-            elif "open" in text.lower():
+            elif "lock" in text.lower():
                 self._lockMailBox(status, sn)
-            elif "close" in text.lower():
+            elif "unlock" in text.lower():
                 self._unlockMailBox(status, sn)
             else:
                 self._unrecognisedCommand(status, sn)
@@ -50,11 +49,13 @@ class MentionStreamListener(tweepy.StreamListener):
     # private
 
     def _replyMailInfo(self, status, sn):
-        text = '@{0} You have {1} unread mail'.format(sn, len(mailbox.getMail))
+        text = '@{0} You have {1} unread mail'.format(sn, mailbox.getMailCount())
         api.update_status(text, status.id)
 
     def _lockMailBox(self, status, sn):
+        print "got here"
         mailbox.lockDoor()
+        print "got here"
         text = '@{0} We have locked your mailbox :)'.format(sn)
         api.update_status(text, status.id)
 
