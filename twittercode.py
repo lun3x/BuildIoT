@@ -5,4 +5,4 @@ auth.set_access_token("825312532302815232-0CNFh0KwJCthpAlRgpq2NeSXcycp2Pt", "Gs5
 
 api = tweepy.API(auth)
 
-api.update_status('Hello World!')
+api.update_status('Hello from Raspberry Pi')
