@@ -1,6 +1,6 @@
 import tweepy
 import json
-rasppi = False #mailbox: use prints or rasp pi actions
+rasppi = True #mailbox: use prints or rasp pi actions
 if rasppi:
     from mailbox_pi import MailboxPi as Mailbox
 else:

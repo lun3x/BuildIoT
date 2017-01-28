@@ -7,40 +7,10 @@ class MailboxSim:
 
     def hasMail(self):
         print "hasMail"
-        if self.mailCount > 0:
-            return True
-        else:
-            return False
 
     def getMailCount(self):
         print "getMail"
         return self.mailCount
-
-    def addMail(self):
-        print "addMail"
-        if self.isDoorLocked:
-            print "addMail failed: door locked"
-            self.mailCount += 1
-            return False
-        else:
-            return True
-
-    def addMails(self, mails):
-        print "addMails with " + mails
-        if self.isDoorLocked:
-            print "addMails failed: door locked"
-            return False
-        else:
-            return True
-
-    def popMail(self):
-        print "popMail"
-        if self.isDoorLocked:
-            print "popMail failed: door locked"
-            return False
-        else:
-            self.mailCount -= 1
-            return True
 
     def lockDoor(self):
         print "lockDoor"
@@ -62,3 +32,12 @@ class MailboxSim:
     def _lowerFlag(self):
         print "lowerFlag"
         self.isFlagDown = True
+        
+    def _incrementMailCount(self):
+        print "incrementMailCount"
+        self.mailCount += 1
+        
+    def _resetMailCount(self):
+        print "resetMailCount"
+        self.mailCount = 0
+        self._lowerFlag()
