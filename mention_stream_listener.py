@@ -19,9 +19,19 @@ class MentionStreamListener(tweepy.StreamListener):
 
         # if tweeter mentioned the bot, do what they asked
         if mentionedScreenname != None:
+            # get tweet text and user info
             text = status.text
             sn = str(status.user.screen_name)
 
+            # validate user is authorised to make tweet commands
+            try:
+                print sn
+                self._authUser(status)
+            except Exception as e:
+                self._userAuthError(status)
+                return # end method
+
+            # respond to request
             if "do i have mail" in text.lower():
                 self._replyMailInfo(status, sn)
             elif "lock" in text.lower():
@@ -56,4 +66,16 @@ class MentionStreamListener(tweepy.StreamListener):
 
     def _unrecognisedCommand(self, status, sn):
         text = '@{0} Sorry, we do not recognise that command :('.format(sn)
+        api.update_status(text, status.id)
+
+
+    def _authUser(self, status):
+        sn = status.user.screen_name
+        print sn
+        if not sn in whitelistUsers:
+            raise Exception
+
+    def _userAuthError(self, status):
+        sn = status.user.screen_name
+        text = '@{0} Sorry, you are not authorised to use this mailbox. :/'.format(sn)
         api.update_status(text, status.id)
