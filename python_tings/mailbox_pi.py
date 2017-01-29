@@ -12,6 +12,8 @@ class MailboxPi:
     def __init__(self):
         self.lock = Servo(17)
         self.flag = Servo(18)
+        self.flag.min()
+        self.lock.value = -0.2
         self.floor = Button(6)
         self.floor.when_released = self._lowerFlag
         self.floor.when_pressed = self._liftFlag
@@ -21,10 +23,10 @@ class MailboxPi:
         return self.floor.is_pressed
 
     def lockDoor(self):
-        self.lock.min()
+        self.lock.value = -0.2
 
     def unlockDoor(self):
-        self.lock.max()
+        self.lock.value = -1
 
     def _liftFlag(self):
         print("You've got mail")
