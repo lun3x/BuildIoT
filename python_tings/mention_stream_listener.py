@@ -1,5 +1,6 @@
 import tweepy
 import json
+import time
 
 from constants import *
 
@@ -58,21 +59,21 @@ class MentionStreamListener(tweepy.StreamListener):
     # private
 
     def _replyMailInfo(self, status, sn):
-        text = '@{0} You have {1} unread mail'.format(sn, self.mailbox.getMailCount())
+        text = '@{0} You have {1} unread mail :) -- {2}'.format(sn, self.mailbox.getMailCount(), time.strftime('%X %x'))
         api.update_status(text, status.id)
 
     def _lockMailBox(self, status, sn):
         self.mailbox.lockDoor()
-        text = '@{0} We have locked your mailbox :)'.format(sn)
+        text = '@{0} We have locked your mailbox :) -- {1}'.format(sn, time.strftime('%X %x'))
         api.update_status(text, status.id)
 
     def _unlockMailBox(self, status, sn):
         self.mailbox.unlockDoor()
-        text = '@{0} We have unlocked your mailbox :)'.format(sn)
+        text = '@{0} We have unlocked your mailbox :) -- {1}'.format(sn, time.strftime('%X %x'))
         api.update_status(text, status.id)
 
     def _unrecognisedCommand(self, status, sn):
-        text = '@{0} Sorry, we do not recognise that command :('.format(sn)
+        text = '@{0} Sorry, we do not recognise that command :( -- {1}'.format(sn, time.strftime('%X %x'))
         api.update_status(text, status.id)
 
     def _authUser(self, status):
@@ -83,19 +84,19 @@ class MentionStreamListener(tweepy.StreamListener):
 
     def _userAuthError(self, status):
         sn = status.user.screen_name
-        text = '@{0} Sorry, you are not authorised to use this mailbox. :/'.format(sn)
+        text = '@{0} Sorry, you are not authorised to use this mailbox. :/ -- {1}'.format(sn, time.strftime('%X %x'))
         api.update_status(text, status.id)
 
     def _authoriseNewUser(self, status, sn):
         try:
             newUser = self._getSecondMentionInTweet(status)
             if newUser in whitelistUsers:
-                text = '@{0} This user is already authorised :)'.format(sn)
+                text = '@{0} This user is already authorised :) -- {1}'.format(sn, time.strftime('%X %x'))
             else:
                 whitelistUsers.append(str(newUser))
-                text = '@{0}, We have granted @{1} permission to tweet your mailbox! :D'.format(sn, newUser)
+                text = '@{0}, We have granted @{1} permission to tweet your mailbox! :D -- {2}'.format(sn, newUser, time.strftime('%X %x'))
         except IndexError as e: #no second mention in tweet
-            text = '@{0}, You didn\'t tell us who to authorise?'.format(sn)
+            text = '@{0}, You didn\'t tell us who to authorise? -- {1}'.format(sn, time.strftime('%X %x'))
         # send the tweet
         api.update_status(text, status.id)
 
@@ -106,11 +107,11 @@ class MentionStreamListener(tweepy.StreamListener):
         try:
             newUser = self._getSecondMentionInTweet(status)
             if not str(newUser) in whitelistUsers:
-                text = '@{0} This user is doesn\'t have permissions already :)'.format(sn)
+                text = '@{0} This user is doesn\'t have permissions already :) -- {1}'.format(sn, time.strftime('%X %x'))
             else:
                 whitelistUsers.remove(str(newUser))
-                text = '@{0}, We have revoked @{1} permission to tweet your mailbox! D:'.format(sn, newUser)
+                text = '@{0}, We have revoked @{1} permission to tweet your mailbox! D: -- {1}'.format(sn, newUser, time.strftime('%X %x'))
         except IndexError as e: #no second mention in tweet
-            text = '@{0}, You didn\'t tell us who to authorise?'.format(sn)
+            text = '@{0}, You didn\'t tell us who to authorise? -- {1}'.format(sn, time.strftime('%X %x'))
         # send the tweet
         api.update_status(text, status.id)

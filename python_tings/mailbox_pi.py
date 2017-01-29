@@ -4,7 +4,8 @@ try:
 except ImportError as e:
     from pi_sim import Servo
     from pi_sim import Button
-from time import sleep
+import time
+from constants import *
 
 class MailboxPi:
 
@@ -12,17 +13,12 @@ class MailboxPi:
         self.lock = Servo(17)
         self.flag = Servo(18)
         self.floor = Button(6)
-        self.door = Button(12)
-        self.door.when_pressed = self._incrementMailCount
-        self.floor.when_released = self._resetMailbox
+        self.floor.when_released = self._lowerFlag
         self.floor.when_pressed = self._liftFlag
-        self.mailCount = 0
+        self.mailInBox = False
 
     def hasMail(self):
         return self.floor.is_pressed
-
-    def getMailCount(self):
-        return self.mailCount
 
     def lockDoor(self):
         self.lock.min()
@@ -31,15 +27,11 @@ class MailboxPi:
         self.lock.max()
 
     def _liftFlag(self):
-        self.flag.max()
+        print("You've got mail")
+        api.update_status("You've got mail! -- {0}".format(time.strftime('%X %x')))
+        self.flag.mid()
 
     def _lowerFlag(self):
+        print("You've emptied your mail")
+        api.update_status("You've emptied your mail -- {0}".format(time.strftime('%X %x')))
         self.flag.min()
-
-    def _incrementMailCount(self):
-        if self.floor.is_pressed:
-            self.mailCount += 1
-
-    def _resetMailbox(self):
-        self.mailCount = 0
-        self._lowerFlag()
