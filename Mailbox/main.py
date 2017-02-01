@@ -12,5 +12,6 @@ if __name__ == "__main__":
     listener = MentionStreamListener(mailbox = mailbox)
     stream = tweepy.Stream(auth = api.auth, listener = listener)
 
+    print("Mailbox set up, starting stream")
     # start stream
     stream.filter(track = [mailboxHandle]) # the mailbox's handle
