@@ -21,3 +21,5 @@ blacklist <user> - removes <user> from list of authorised users
 ```
 
 When mail is pushed through the slot it will tweet "You've got mail!" with a link to a Youtube video of the AOL "You've got mail!" notification.
+
+When mail is removed from the box it will tweet "You've emptied your mailbox".
