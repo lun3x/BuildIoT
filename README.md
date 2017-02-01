@@ -1,6 +1,6 @@
-# BuildIoT
+# You'veGotMailBox
 
-Building an Internet of Things mailbox in 24 hours - "You've got mail!"
+##Building an Internet of Things mailbox in 24 hours
 
 This is the code behind the physical mailbox we built for the Bristol Electrical and Electronics Engineering Society. Here's the thing itself:
 
